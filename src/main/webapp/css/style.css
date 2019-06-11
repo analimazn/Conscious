@@ -1,12 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand');
 
-body {
-	font-family: 'Quicksand', sans-serif;
-}
-
 button {
     color: black;
-    text-transform: uppercase;    
+    text-transform: uppercase; 
+    padding: 5px;
+	margin-top: 5px;  
 }
 
 div.container {
@@ -48,9 +46,21 @@ a {
 	text-align: center;
 }
 
+.welcome {
+	width: 600px;
+  	height: 400px;
+  	padding-top: 150px;
+  	text-align: center;
+  	margin: 35px auto;
+}
+
+.box {
+	width: 300px;
+  	height: 200px;
+}
 #menu {
 	padding: 10px 10px;
-	text-align: center;
+	text-align: right;
 	position: fixed;
 	right: 0;
 	margin-top: -2.5em;
