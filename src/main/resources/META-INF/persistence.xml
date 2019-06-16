@@ -1,0 +1,31 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+  version="2.1">
+  <persistence-unit name="persistence_conscious">
+    <description> File to persistence datas into db conscious.</description>
+    <!-- Provedor da implementação das especificações de interface do JPA -->
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider> 
+    <class>model.Candidate</class> 
+    <class>model.County</class>
+    <class>model.DistrictFederal</class> 
+    <class>model.Election</class>
+    <class>model.ElectoralSection</class> 
+    <class>model.Party</class>
+    <class>model.User</class> 
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/conscious" />
+      <property name="javax.persistence.jdbc.user" value="root" />
+      <property name="javax.persistence.jdbc.password" value="root" />
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+      <property name="hibernate.connection.pool_size" value="10" />
+      <property name="hibernate.show_sql" value="false" />
+      <property name="hibernate.format_sql" value="false" />
+      <property name="hibernate.use_sql_comments" value="false" />
+      <property name="hibernate.jdbc.wrap_result_sets" value="false" />
+      <property name="hibernate.hibernate.cache.use_query_cache" value="false" />
+    </properties>
+  </persistence-unit>
+</persistence>

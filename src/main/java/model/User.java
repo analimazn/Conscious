@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="USER")
-public class User {
+public class User implements Serializable{
 	
 	@Id @GeneratedValue
 	@Column(name="ID_USER")

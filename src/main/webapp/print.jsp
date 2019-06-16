@@ -1,10 +1,17 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<%@page import="java.util.List"%>
+<%@page import="services.ElectionService"%>
+<%@page import="model.Election"%>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="css/style.css" />
-        <title>Impress�o</title>
+        <title>Impressão</title>
     </head>
     <body>
      	<% 	
@@ -26,44 +33,49 @@
         	};
         %>
         <header id="menu">
-        	<p id="user"><%=resUser%></p>
-	       	<p id="inscriptionNumber"><%=resInscriptionNumber%></p>
-	       	<p id="userType"><%=resUserType%></p>
+        	<p id="user"><%=resUser%> - <%=resInscriptionNumber%> </p>
 	       	<p id="userEnabled"><%=resUserEnabled%></p>
-	        <button><a href="home.jsp">Home</a></button>
-	        <button><a href="login.jsp">Sair</a></button>
+	        <a class="btn btn-light" href="home.jsp">Home</a>
+	        <a class="btn btn-light" href="login.jsp">Sair</a>
        	</header>
        	<div class="welcome center-block">
-       	   	<div class="container">          
-            	<h1>Impress�o do resultado</h1>
-	            <table class="container-secondary">
+           	<h1>Impressão do resultado</h1>
+           	<br/>
+            <h3>Confira abaixo o resultado da eleição:</h3>          
+        </div>
+		<div class="container-table center-block">
+	       	<table class="table table-hover">
+	           <thead class="thead-dark">
+	               <tr>
+	                   <th>Partido</th>
+	                   <th>Candidato</th>
+	                   <th>Qtd. de votos</th>
+	               </tr>
+	           	</thead>
+	           	<tbody>
+	               <%
+	                   ElectionService electionService = new ElectionService();
+	                   List<Election> list = electionService.getListOfElection();
+	                   int totalVotes = 0;
+	                   for (Election electionItem : list) {
+	                  	 String party = electionItem.getIdParty().getPartyName();
+	                  	 String candidate = electionItem.getIdCandidate().getCandidateName();
+	                  	 int qtdVotes = electionItem.getQuantityVotes();
+	                  	 totalVotes += qtdVotes;
+	               %>
 	                <tr>
-	                    <th>Candidato</th>
-	                    <th>Qtd de Votos</th>
+	                   	<td><%=party %></td>
+	                    <td><%=candidate %></td>
+	                    <td><%=qtdVotes %></td>
 	                </tr>
+	               	<%}%>
 	                <tr>
-	                    <td>Candidato 1</td>
-	                    <td>30</td>
-	                </tr>
-	                <tr>
-	                    <td>Candidato 2</td>
-	                    <td>60</td>
-	                </tr>
-	                <tr>
-	                    <td>Candidato 3</td>
-	                    <td>40</td>
-	                </tr>
-	                <tr>
-	                    <td>TOTAL</td>
-	                    <td>130</td>
-	                </tr>
-	            </table>
-	        </div>
-       	</div>
+					 	<th>Total de votos</th>
+					 	<td></td>
+					 	<td><%=totalVotes %></td>
+					</tr>
+	           	<tbody>				
+			</table>
+		</div>
     </body>
-
-    <!--<script type="text/javascript" src="js/jquery-3.4.0.slim.min.js"></script>
-    <script type="text/javascript" src="js/popper.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>-->
 </html>

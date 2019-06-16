@@ -1,67 +1,118 @@
 package services;
- 
-import java.util.ArrayList;
-import java.util.List;
-import model.User;
 
-import org.hibernate.query.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import utils.HibernateUtil;
+import java.util.List;
+import java.util.ArrayList;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+
+import utils.JPAUtil;
+import model.User;
  
 public class UserService {
- 
-    public boolean authenticateUser(String inscriptionNumber, String password) {
-        User user = getUserByInscriptionNumber(inscriptionNumber);         
-        
-        if(user!=null && user.getInscriptionNumber().equals(inscriptionNumber) && user.getPassword().equals(password)) {
-            return true;
-        }else{
-            return false;
+    private static UserService instance;
+    protected EntityManager entityManager;
+    public static User userLogged;
+    
+    public UserService() {
+        entityManager = JPAUtil.getEntityManager();
+    }
+    
+    public static UserService getInstance() {
+        if (instance == null) {
+            instance = new UserService();
         }
+        return instance;
+    }
+    
+    public User authenticateUser(String inscriptionNumber, String password) {
+        User user = getUserByInscriptionNumber(inscriptionNumber);
+		if(user != null && user.getInscriptionNumber().
+      		equals(inscriptionNumber) && user.getPassword().equals(password)) {
+          return user;
+		}
+        return null;
     }
  
     public User getUserByInscriptionNumber(String inscriptionNumber) {
-        Session session = HibernateUtil.openSession();
-        Transaction tx = null;
+    	entityManager.getTransaction().begin();
         User user = null;
-        
-        try {
-            tx = session.getTransaction();
-            tx.begin();
-            
-            Query<User> query = session.createQuery("from User where inscriptionNumber='"+inscriptionNumber+"'");
-            user = query.uniqueResult();
-            tx.commit();
-            
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
+    	try {
+            String strQuery = "SELECT user FROM User user WHERE inscriptionNumber='"+inscriptionNumber+"'";
+            Query query = entityManager.createQuery(strQuery);
+        	user = (User) query.getSingleResult();
+    	} catch (NoResultException nre){
+        	System.out.println(nre);
         } finally {
-            session.close();
+        	entityManager.getTransaction().commit();
         }
-        return user;
+    	return user;
     }
-     
-    public List<User> getListOfUsers(){
-        List<User> list = new ArrayList<User>();
-        Session session = HibernateUtil.openSession();
-        Transaction tx = null;       
+    
+    public List<User> getListOfUsersToEnabled(){
+    	entityManager.getTransaction().begin();
+        List<User> listUsers = new ArrayList<User>();
         try {
-            tx = session.getTransaction();
-            tx.begin();
-            list = session.createQuery("from User").list();                       
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
+            String strQuery = "SELECT user FROM User user WHERE enabled = 0";
+            Query query = entityManager.createQuery(strQuery);
+            listUsers = (List<User>) query.getResultList();
+        } catch (NoResultException nre) {
+        	System.out.println(nre);
         } finally {
-            session.close();
+            entityManager.getTransaction().commit();
         }
-        return list;
+    	return listUsers;
     }
+    
+    public List<User> getListOfUsersEnabled(){
+    	entityManager.getTransaction().begin();
+        List<User> listUsers = new ArrayList<User>();
+        try {
+            String strQuery = "SELECT user FROM User user WHERE enabled = 1";
+            Query query = entityManager.createQuery(strQuery);
+            listUsers = (List<User>) query.getResultList();
+        } catch (NoResultException nre) {
+        	System.out.println(nre);
+        } finally {
+            entityManager.getTransaction().commit();
+        }
+    	return listUsers;
+    }
+    
+    
+    public boolean enableUser(int userId) {
+    	boolean result = false;
+    	try {    			    			
+			User userToEnable = entityManager.find(User.class, userId);
+			entityManager.getTransaction().begin();
+			userToEnable.setEnabled(true);
+		} catch (Exception err) {
+			System.out.println(err);
+		} finally {
+    		entityManager.getTransaction().commit();
+		}
+    	return result;
+    }
+    
+    public void registerVoteToUser(int userId) {
+    	try {    			    			
+			User userToEnable = entityManager.find(User.class, userId);
+			entityManager.getTransaction().begin();
+			userToEnable.setVoted(true);
+		} catch (Exception err) {
+			System.out.println(err);
+		} finally {
+    		entityManager.getTransaction().commit();
+		}
+    }
+    
+		//String strQuery = "UPDATE User SET enabled = 1 where inscriptionNumber='"+inscriptionNumber+"'";
+		//Query query = entityManager.createQuery(strQuery);
+		
+		//int updateUser = query.executeUpdate();
+		//System.out.println(updateUser);
+		//String strQuery = "update User user set enabled = 1 where idUser='"+id+"'";
+		//Query query = entityManager.createQuery(strQuery);
+
 }

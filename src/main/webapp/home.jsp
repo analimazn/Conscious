@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,12 +28,12 @@
         	};
         %>
         <header id="menu">
-        	<p id="inscriptionNumber"><%=resInscriptionNumber%></p>
+        	<p id="inscriptionNumber"> NÂº TÃ­tulo: <%=resInscriptionNumber%></p>
         	<p id="userType"><%=resUserType%></p>
         	<p id="userEnabled"><%=resUserEnabled%></p>
         </header>
        	<div class="welcome center-block">
-   			<h1>Olá <%=resUser%>! Você está no site de votação Conscious.</h1>
+   			<h1>OlÃ¡ <%=resUser%>! VocÃª estÃ¡ no site de votaÃ§Ã£o Conscious.</h1>
        	</div>
        	<% request.getSession().setAttribute("user", resUser);%>
         <% request.getSession().setAttribute("inscriptionNumber", resInscriptionNumber);%>
@@ -45,19 +48,19 @@
 			var userEnabledLength = userEnabled.length;
 
 			if (userType == 'CHEFESECAO') {
-				var button1 =  userEnabledLength == 1 ? "<button id='vote'><a href='vote.jsp'>Votar</a></button>" : "";
-                var button2 = "<button id='validate'><a href='validate.jsp'>Validar usuário</a></button>";
-                var button3 = "<button id='print'><a href='print.jsp'>Imprimir resultado</a></button>";
-                var button4 = "<button id='out'><a href='login.jsp'>Sair</a></button>";            
+				var button1 =  userEnabledLength == 1 ? "<a class='btn btn-light' href='vote.jsp'>Votar</a>" : "";
+                var button2 = "<a class='btn btn-light' href='validate.jsp'>Habilitar usuÃ¡rio</a>";
+                var button3 = "<a class='btn btn-light' href='print.jsp'>Imprimir resultado</a>";
+                var button4 = "<a class='btn btn-light' href='login.jsp'>Sair</a>";            
 				$("#menu").append(button1, button2, button3, button4); 
 			} else if (userType == 'MESARIO') {
-				var button1 =  userEnabledLength == 1 ? "<button id='vote'><a href='vote.jsp'>Votar</a></button>" : "";
-                var button2 = "<button id='validate'><a href='validate.jsp'>Validar usuário</a></button>";
-                var button3 = "<button id='out'><a href='login.jsp'>Sair</a></button>";            
+				var button1 =  userEnabledLength == 1 ? "<a class='btn btn-light' href='vote.jsp'>Votar</a>" : "";
+                var button2 = "<a class='btn btn-light' href='validate.jsp'>Habilitar usuÃ¡rio</a>";
+                var button3 = "<a class='btn btn-light' href='login.jsp'>Sair</a>";            
 				$("#menu").append(button1, button2, button3); 
 			} else {
-				var button1 =  userEnabledLength == 1 ? "<button id='vote'><a href='vote.jsp'>Votar</a></button>" : "";
-                var button2 = "<button id='out'><a href='login.jsp'>Sair</a></button>";           
+				var button1 =  userEnabledLength == 1 ? "<a class='btn btn-light' href='vote.jsp'>Votar</a>" : "";
+                var button2 = "<a class='btn btn-light' href='login.jsp'>Sair</a>";           
 				$("#menu").append(button1, button2); 
 			}
 		})
