@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand');
 
+@font-face {
+  font-family: myFirstFont;
+  src: url(sansation_bold.woff);
+  font-weight: bold;
+}
+
 button {
     color: black;
     text-transform: uppercase; 

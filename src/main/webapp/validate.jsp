@@ -61,7 +61,7 @@
 		                   UserService userService = new UserService();
 		                   List<User> list = userService.getListOfUsersToEnabled();
 		                   for (User userItem : list) {
-		                  	 String date = userItem.getBornDate().toString().substring(0, 11);
+		                  	 String date = userItem.getBornDate().toGMTString().substring(0, 11);
 		                  	 String dateWithoutTime = date.substring(0, 11);
 		               %>
 		                <tr>
